@@ -1,7 +1,7 @@
 //go:build include
 // +build include
 
-//go:generate go-include --out main_gen.go $GOFILE
+//go:generate include --out main_gen.go $GOFILE
 
 package main
 

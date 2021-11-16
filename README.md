@@ -1,11 +1,11 @@
-# go-include
+# include
 
 ![CI Status][ci-img-url] 
 [![Go Report Card][go-report-card-img-url]][go-report-card-url] 
 [![Package Doc][package-doc-img-url]][package-doc-url] 
 [![Releases][release-img-url]][release-url]
 
-`go-include` is a generator which includes file content into `string` or `[]byte` variables of go modules.
+`include` is a generator which includes file content into `string` or `[]byte` variables of go modules.
 This generator is inspired by the Rust macro 
 [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) which is used to include a file as a
 rust variable.
@@ -18,13 +18,13 @@ css or any other data as part of the produced binary.
 Install the generator:
 
 ```shell
-$ go install github.com/halimath/go-include/cmd/go-include@latest
+$ go install github.com/halimath/include/cmd/include@latest
 ```
 
 Add the library as a dependency:
 
 ```shell
-$ go get github.com/halimath/go-include
+$ go get github.com/halimath/include
 ```
 
 Now, create one or more source files that contain package variable declarations which are initialized with a 
@@ -32,6 +32,7 @@ call to either `include.String` or `include.Bytes`.
 
 ```go
 import "github.com/halimath/include"
+
 var html = include.String("./html/index.html")
 ```
 
@@ -50,7 +51,7 @@ Add a `go:generate` comment to instruct `go generate` how to generate a version 
 to the above functions replaced with actual file content:
 
 ```go
-//go:generate go-include --out file_gen.go $GOFILE
+//go:generate include --out file_gen.go $GOFILE
 ```
 
 Run 
@@ -86,10 +87,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[ci-img-url]: https://github.com/halimath/go-include/workflows/CI/badge.svg
-[go-report-card-img-url]: https://goreportcard.com/badge/github.com/halimath/go-include
-[go-report-card-url]: https://goreportcard.com/report/github.com/halimath/go-include
+[ci-img-url]: https://github.com/halimath/include/workflows/CI/badge.svg
+[go-report-card-img-url]: https://goreportcard.com/badge/github.com/halimath/include
+[go-report-card-url]: https://goreportcard.com/report/github.com/halimath/include
 [package-doc-img-url]: https://img.shields.io/badge/GoDoc-Reference-blue.svg
-[package-doc-url]: https://pkg.go.dev/github.com/halimath/go-include
-[release-img-url]: https://img.shields.io/github/v/release/halimath/go-include.svg
-[release-url]: https://github.com/halimath/go-include/releases
+[package-doc-url]: https://pkg.go.dev/github.com/halimath/include
+[release-img-url]: https://img.shields.io/github/v/release/halimath/include.svg
+[release-url]: https://github.com/halimath/include/releases
