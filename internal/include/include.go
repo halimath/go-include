@@ -73,7 +73,7 @@ func Include(filename string, source []byte, options Options) ([]byte, error) {
 			for _, c := range cg.List {
 				if strings.Contains(c.Text, "go:build "+options.BuildTag) ||
 					strings.Contains(c.Text, "+build "+options.BuildTag) ||
-					strings.Contains(c.Text, "go:generate include") {
+					strings.Contains(c.Text, "go:generate go-include") {
 					out.Write(source[lastWriteOffset : c.Pos()-1])
 					lastWriteOffset = int(c.End())
 				}
@@ -81,6 +81,7 @@ func Include(filename string, source []byte, options Options) ([]byte, error) {
 		}
 
 		out.WriteString(fmt.Sprintf("//go:build !%s\n", options.BuildTag))
+		out.WriteString(fmt.Sprintf("// +build !%s\n", options.BuildTag))
 
 		for _, d := range f.Decls {
 			g, ok := d.(*ast.GenDecl)

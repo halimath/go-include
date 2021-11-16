@@ -1,4 +1,5 @@
 //go:build include
+// +build include
 
 //go:generate go-include --out main_gen.go $GOFILE
 
