@@ -15,7 +15,8 @@ import (
 	"golang.org/x/tools/imports"
 )
 
-const DEFAULT_BUILD_TAG = "include"
+// DefaultBuildTag is the default build tag to use when no other build tag has been given explicitly.
+const DefaultBuildTag = "include"
 
 // Options defines the options to be passed when including files.
 type Options struct {
@@ -28,7 +29,7 @@ type Options struct {
 }
 
 // IncludeFile performs the inclusion reading source code from src. It returns the generated source as well
-// as any error occured during processing.
+// as any error occurred during processing.
 func IncludeFile(src string, options Options) ([]byte, error) {
 	content, err := os.ReadFile(src)
 	if err != nil {
@@ -42,7 +43,7 @@ func IncludeFile(src string, options Options) ([]byte, error) {
 // used in error messages.
 func Include(filename string, source []byte, options Options) ([]byte, error) {
 	if options.BuildTag == "" {
-		options.BuildTag = DEFAULT_BUILD_TAG
+		options.BuildTag = DefaultBuildTag
 	}
 
 	var out bytes.Buffer
@@ -117,29 +118,28 @@ func Include(filename string, source []byte, options Options) ([]byte, error) {
 						continue
 					}
 
-					var filename string
-
-					if fn, ok := c.Args[0].(*ast.BasicLit); !ok {
+					fn, ok := c.Args[0].(*ast.BasicLit)
+					if !ok {
 						inspectErr = fmt.Errorf("unsupported argument when calling include.%s in %s: only strings are supported", f.Sel.Name, filename)
 						return false
-					} else {
-						if fn.Value[0] != '"' || fn.Value[len(fn.Value)-1] != '"' {
-							inspectErr = fmt.Errorf("unsupported argument when calling include.%s in %s: only strings are supported", f.Sel.Name, filename)
-							return false
-						}
-						filename = fn.Value[1 : len(fn.Value)-1]
 					}
+
+					if fn.Value[0] != '"' || fn.Value[len(fn.Value)-1] != '"' {
+						inspectErr = fmt.Errorf("unsupported argument when calling include.%s in %s: only strings are supported", f.Sel.Name, filename)
+						return false
+					}
+					includeFilename := fn.Value[1 : len(fn.Value)-1]
 
 					var replacement string
 
 					if f.Sel.Name == "String" {
-						replacement, err = fileContentAsString(filename, options)
+						replacement, err = fileContentAsString(includeFilename, options)
 						if err != nil {
 							inspectErr = err
 							return false
 						}
 					} else if f.Sel.Name == "Bytes" {
-						replacement, err = fileContentAsBytes(filename, options)
+						replacement, err = fileContentAsBytes(includeFilename, options)
 						if err != nil {
 							inspectErr = err
 							return false
