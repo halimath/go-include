@@ -5,6 +5,10 @@
 [![Package Doc][package-doc-img-url]][package-doc-url] 
 [![Releases][release-img-url]][release-url]
 
+---
+**This module is not maintained anymore. Please use https://pkg.go.dev/embed instead.**
+---
+
 `include` is a generator which includes file content into `string` or `[]byte` variables of go modules.
 This generator is inspired by the Rust macro 
 [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) which is used to include a file as a
